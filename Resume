@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashinath Jada - Data Engineer Portfolio</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for clean visuals -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* --- General Setup & Typography --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --primary-color: #06b6d4; /* Cyan 500 */
+            --secondary-color: #4f46e5; /* Indigo 600 */
+            --bg-dark: #0f172a; /* Slate 900 */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #f8fafc; /* Slate 50 */
+            background-color: var(--bg-dark);
+            scroll-behavior: smooth;
+        }
+
+        /* --- Stylish Section Titles (Readability Boost) --- */
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 2.5rem;
+            position: relative;
+            color: white;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            margin-top: 0.5rem;
+            border-radius: 9999px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Timeline Styling (UX/Visual Flow) --- */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.3rem;
+            width: 14px;
+            height: 14px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            z-index: 10;
+            border: 3px solid #1e293b; /* Darker border for contrast */
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #334155; /* Slate 700 for the line */
+            z-index: 5;
+        }
+
+        .timeline-item:last-child:after {
+            height: 0; /* Stop the line at the last element */
+        }
+
+        /* --- JS-driven Star Field (Stylish Background Effect) --- */
+        #star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(ellipse at bottom, #100b21 0%, var(--bg-dark) 100%);
+        }
+        .star {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 2s, transform 0.5s;
+        }
+
+    </style>
+</head>
+
+<body class="antialiased">
+    <!-- Star Field Background Container (JS-Driven) -->
+    <div id="star-field"></div>
+
+    <!-- Navigation Bar (Fixed Top) -->
+    <nav class="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm shadow-xl border-b border-cyan-500/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo/Name -->
+                <a href="#home" class="text-2xl font-extrabold text-white tracking-wider hover:text-cyan-400 transition duration-300">
+                    Kashinath Jada
+                </a>
+                
+                <!-- Desktop Links -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                    <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">About</a>
+                    <a href="#skills" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Skills</a>
+                    <a href="#experience" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Experience</a>
+                    <a href="#education" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Education</a>
+                    <a href="#achievements" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Awards</a>
+                    <a href="#projects" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Projects</a>
+                    <a href="#contact" class="nav-link px-3 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 transition duration-300">Contact</a>
+                </div>
+                
+                <!-- Mobile Menu Button (Hamburger) -->
+                <button id="mobile-menu-btn" type="button" class="sm:hidden text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 rounded-lg p-2" aria-expanded="false">
+                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
+                <a href="#skills" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Skills</a>
+                <a href="#experience" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Experience</a>
+                <a href="#education" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Education</a>
+                <a href="#achievements" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Awards</a>
+                <a href="#projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
+                <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 pt-16">
+        
+        <!-- Hero Section -->
+        <header id="home" class="py-20 text-center">
+            <div class="relative inline-block p-4 border-4 border-cyan-500 rounded-full mb-6 shadow-2xl shadow-cyan-500/30">
+                <span class="text-6xl font-extrabold text-cyan-400">KJ</span>
+            </div>
+            <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight mb-3">
+                Hello, I'm <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-indigo-500">Kashinath Jada</span>
+            </h1>
+            <p class="text-2xl sm:text-3xl font-light text-gray-300 mb-8">
+                Data Engineer | AI & Automation Specialist
+            </p>
+            <a href="#contact" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full text-white bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/50 transition duration-300 transform hover:scale-105">
+                <i data-lucide="mail" class="w-5 h-5 mr-2"></i> Get In Touch
+            </a>
+        </header>
+
+        <!-- --- About Section --- -->
+        <section id="about" class="py-16">
+            <h2 class="section-title text-center">About Me</h2>
+            <div class="bg-slate-800 p-8 rounded-2xl shadow-xl shadow-slate-800/50 border border-cyan-500/10">
+                <p class="text-lg text-gray-300 mb-4 leading-relaxed">
+                    I am a Data Engineer with hands-on experience at Reventics, specializing in designing, building, and optimizing robust data pipelines to ingest, transform, and analyze BCBS member and policy data. I focus on delivering scalable, secure, and data-driven solutions in the healthcare and automation space.
+                </p>
+                <p class="text-lg text-gray-300 leading-relaxed">
+                    My proficiency spans **Python, SQL, and cloud platforms , coupled with strong expertise in ETL workflows, data warehousing, and AI integration. I leverage technologies like Apache Airflow, Docker, and Kubernetes to enhance system performance and reliability.
+                </p>
+            </div>
+        </section>
+
+        <!-- --- Skills Section --- -->
+        <section id="skills" class="py-16">
+            <h2 class="section-title text-center">Technical Skills</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                
+                <!-- Skill Card 1: Data & ML Skills -->
+                <div class="p-6 bg-slate-800 rounded-xl shadow-xl border-t-4 border-cyan-500 transition duration-300 hover:shadow-cyan-500/30">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-3 flex items-center">
+                        <i data-lucide="database" class="w-6 h-6 mr-3"></i> Data & ML Skills
+                    </h3>
+                    <ul class="space-y-2 text-gray-300 text-base">
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> Machine Learning: NumPy, Pandas, Scikit-learn, TensorFlow, Transformers.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> Databases: PostgreSQL, MongoDB, Data Warehousing concepts.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> ETL & Orchestration: Apache Airflow, Data Factory, ETL workflows.</li>
+                    </ul>
+                </div>
+
+                <!-- Skill Card 2: Programming & Tools -->
+                <div class="p-6 bg-slate-800 rounded-xl shadow-xl border-t-4 border-indigo-500 transition duration-300 hover:shadow-indigo-500/30">
+                    <h3 class="text-xl font-bold text-indigo-400 mb-3 flex items-center">
+                        <i data-lucide="code" class="w-6 h-6 mr-3"></i> Programming & Tools
+                    </h3>
+                    <ul class="space-y-2 text-gray-300 text-base">
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-cyan-400 mt-1 flex-shrink-0"></i> Languages: Python, SQL, C/C++, Java, HTML, CSS.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-cyan-400 mt-1 flex-shrink-0"></i> IDEs/Tools: Jupyter Notebook, VS Code, MS Excel, PowerPoint.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-cyan-400 mt-1 flex-shrink-0"></i> DevOps: Git, GitHub Actions (CI/CD).</li>
+                    </ul>
+                </div>
+
+                <!-- Skill Card 3: Cloud & Soft Skills -->
+                <div class="p-6 bg-slate-800 rounded-xl shadow-xl border-t-4 border-cyan-500 transition duration-300 hover:shadow-cyan-500/30">
+                    <h3 class="text-xl font-bold text-cyan-400 mb-3 flex items-center">
+                        <i data-lucide="cloud" class="w-6 h-6 mr-3"></i> Cloud & Soft Skills
+                    </h3>
+                    <ul class="space-y-2 text-gray-300 text-base">
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> AWS: SageMaker, Lambda, S3, Glue, EC2, CloudWatch.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> Containerization: Docker, Kubernetes.</li>
+                        <li class="flex items-start"><i data-lucide="chevrons-right" class="w-5 h-5 mr-2 text-indigo-400 mt-1 flex-shrink-0"></i> Soft Skills: Teamwork, Adaptability, Problem Solving, Fast Learner.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Experience Section (Stylish Timeline) --- -->
+        <section id="experience" class="py-16">
+            <h2 class="section-title text-center">Work Experience</h2>
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Experience Item 1: Reventics -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-2xl border-l-4 border-cyan-500 transition duration-300 hover:scale-[1.02] hover:shadow-cyan-500/40">
+                        <p class="text-sm font-semibold text-gray-400 mb-1">July 2024 - Present</p>
+                        <h3 class="text-2xl font-bold text-white">Healthcare Data Engineer - AI & Automation</h3>
+                        <p class="text-cyan-400 font-medium mb-3">Reventics | Hyderabad, India</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                            <li>Designed and built AI-powered data pipelines using Python, Pandas, and Apache Airflow to process BCBS member/policy data, automating intricate ETL workflows to improve efficiency.</li>
+                            <li>Integrated FHIR-based standards to ensure semantic interoperability and smooth data exchange across payer-provider systems, achieving compliance.</li>
+                            <li>Utilized Docker and Kubernetes for containerized services in cloud-native environments, ensuring scalability and secure handling of sensitive health data.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Experience Item 2: Rinex Tech Solutions -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-2xl border-l-4 border-indigo-500 transition duration-300 hover:scale-[1.02] hover:shadow-indigo-500/40">
+                        <p class="text-sm font-semibold text-gray-400 mb-1">May 2022 - Dec 2022</p>
+                        <h3 class="text-2xl font-bold text-white">Machine Learning Intern</h3>
+                        <p class="text-indigo-400 font-medium mb-3">Rinex Tech Solutions | Hyderabad</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                            <li>Created classification/regression models using Scikit-learn and TensorFlow.</li>
+                            <li>Supported the entire ML pipeline, from data preparation with NumPy/Pandas to model deployment concepts.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Education & Certifications Section --- -->
+        <section id="education" class="py-16">
+            <h2 class="section-title text-center">Education & Certifications</h2>
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Education Item 1: B.Tech -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-2xl border-l-4 border-green-500 transition duration-300 hover:scale-[1.02] hover:shadow-green-500/40">
+                        <p class="text-sm font-semibold text-gray-400 mb-1">2020 - 2024</p>
+                        <h3 class="text-2xl font-bold text-white">B.Tech in Artificial Intelligence (AI)</h3>
+                        <p class="text-green-400 font-medium mb-3">Vidya Jyothi Institute of Technology | Hyderabad</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                            <li>CGPA: 8.8/10. Focused coursework in Deep Learning, Computer Vision, and Advanced Data Structures.</li>
+                            <li>Developed strong theoretical and practical foundations in building AI-driven solutions.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education Item 2: Intermediate - MPC -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-2xl border-l-4 border-yellow-500 transition duration-300 hover:scale-[1.02] hover:shadow-yellow-500/40">
+                        <p class="text-sm font-semibold text-gray-400 mb-1">Apr 2018 – Apr 2020 | Percentage 94%</p>
+                        <h3 class="2xl font-bold text-white">Intermediate – MPC (Maths, Physics, Chemistry)</h3>
+                        <p class="text-yellow-400 font-medium mb-3">Sri Chaitanya Junior College, Bowrampet</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                            <li>Emphasis on problem-solving and analytical skills, foundational to engineering concepts.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Education Item 3: Secondary School Certificate -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-6 rounded-xl shadow-2xl border-l-4 border-pink-500 transition duration-300 hover:scale-[1.02] hover:shadow-pink-500/40">
+                        <p class="text-sm font-semibold text-gray-400 mb-1">Apr 2009 – Apr 2018 | Percentage: 85%</p>
+                        <h3 class="text-2xl font-bold text-white">Secondary School Certificate (ICSE Board)</h3>
+                        <p class="text-pink-400 font-medium mb-3">Sri Sai Public School, Patancheru</p>
+                        <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                            <li>Cultivated an early interest in technology and computing principles.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Certification Block -->
+                <div class="pt-6 text-center">
+                    <h4 class="text-xl font-bold text-cyan-400 mb-4 tracking-wider border-b border-cyan-500/50 pb-2 inline-block">Key Certifications</h4>
+                </div>
+
+                <!-- Certification Item 1: DAA -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-4 rounded-lg shadow-lg border-l-4 border-yellow-500 flex justify-between items-center transition duration-300 hover:bg-slate-700/50">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Design and Analysis of Algorithms</h3>
+                            <p class="text-yellow-400 text-sm">IIT Bombay (May 2022)</p>
+                        </div>
+                        <i data-lucide="award" class="w-6 h-6 text-yellow-500"></i>
+                    </div>
+                </div>
+
+                <!-- Certification Item 2: ML with Python -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-4 rounded-lg shadow-lg border-l-4 border-pink-500 flex justify-between items-center transition duration-300 hover:bg-slate-700/50">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Machine Learning with Python</h3>
+                            <p class="text-pink-400 text-sm">IBM (Mar 2021)</p>
+                        </div>
+                        <i data-lucide="award" class="w-6 h-6 text-pink-500"></i>
+                    </div>
+                </div>
+                
+                <!-- Certification Item 3: Cloud & Dev Community -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-4 rounded-lg shadow-lg border-l-4 border-cyan-500 flex justify-between items-center transition duration-300 hover:bg-slate-700/50">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Cloud & Dev Community Training</h3>
+                            <p class="text-cyan-400 text-sm">Microsoft / Devtown (Oct 2021)</p>
+                        </div>
+                        <i data-lucide="award" class="w-6 h-6 text-cyan-500"></i>
+                    </div>
+                </div>
+                
+                <!-- Certification Item 4: C Programming -->
+                <div class="timeline-item">
+                    <div class="bg-slate-800 p-4 rounded-lg shadow-lg border-l-4 border-indigo-500 flex justify-between items-center transition duration-300 hover:bg-slate-700/50">
+                        <div>
+                            <h3 class="text-lg font-bold text-white">C Programming Fundamentals</h3>
+                            <p class="text-indigo-400 text-sm">Cisco Networking Academy (Jun 2021)</p>
+                        </div>
+                        <i data-lucide="award" class="w-6 h-6 text-indigo-500"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Achievements Section (NEW) --- -->
+        <section id="achievements" class="py-16">
+            <h2 class="section-title text-center">Achievements & Leadership</h2>
+            <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-6">
+                
+                <!-- Achievement 1: SPP IIT Roorkee -->
+                <div class="p-5 bg-slate-800 rounded-xl shadow-2xl border-l-4 border-cyan-500 flex items-start space-x-4 transition duration-300 hover:scale-[1.02] hover:shadow-cyan-500/40">
+                    <i data-lucide="trophy" class="w-6 h-6 text-cyan-400 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Student Partnership Program (SPP)</h3>
+                        <p class="text-gray-300 text-sm">IIT Roorkee | Jan 2023</p>
+                    </div>
+                </div>
+                
+                <!-- Achievement 2: GDCS Ideathon Runner-Up -->
+                <div class="p-5 bg-slate-800 rounded-xl shadow-2xl border-l-4 border-indigo-500 flex items-start space-x-4 transition duration-300 hover:scale-[1.02] hover:shadow-indigo-500/40">
+                    <i data-lucide="git-fork" class="w-6 h-6 text-indigo-400 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Runner-Up – GDCS Ideathon</h3>
+                        <p class="text-gray-300 text-sm">VJIT | Jan 2022</p>
+                    </div>
+                </div>
+                
+                <!-- Achievement 3: Student Ambassador -->
+                <div class="p-5 bg-slate-800 rounded-xl shadow-2xl border-l-4 border-green-500 flex items-start space-x-4 transition duration-300 hover:scale-[1.02] hover:shadow-green-500/40">
+                    <i data-lucide="star" class="w-6 h-6 text-green-400 mt-1 flex-shrink-0"></i>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Student Ambassador</h3>
+                        <p class="text-gray-300 text-sm">Corizo | 2022</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- --- Projects Section --- -->
+        <section id="projects" class="py-16">
+            <h2 class="section-title text-center">Key Projects & Research</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Project 1: Drone-based Hyperspectral Imaging -->
+                <div class="p-6 bg-slate-800 rounded-xl shadow-2xl border-b-4 border-indigo-500 transition duration-300 hover:shadow-indigo-500/40">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xl font-bold text-white">Drone-based Hyperspectral Imaging</h3>
+                        <span class="text-xs font-semibold px-3 py-1 bg-cyan-600 rounded-full text-white">PUBLISHED</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">Precision Agriculture | Deep Learning</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                        <li>Created a system using **DenseNet-201** for the early detection of sheath blight disease in rice crops.</li>
+                        <li>Research published (IRJMETS-indexed) on combining computer vision, deep learning, and remote sensing for high-precision classification.</li>
+                    </ul>
+                </div>
+
+                <!-- Project 2: Scalable AI-Based Health Monitoring System -->
+                <div class="p-6 bg-slate-800 rounded-xl shadow-2xl border-b-4 border-cyan-500 transition duration-300 hover:shadow-cyan-500/40">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-xl font-bold text-white">Scalable Health Monitoring System</h3>
+                        <span class="text-xs font-semibold px-3 py-1 bg-indigo-600 rounded-full text-white">ONGOING</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-4">AWS/Azure Data Factory | Microsoft Fabric</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-300 text-base">
+                        <li>Automating data processing for BCBS members using data pipelines across **AWS, Azure Data Factory, and Microsoft Fabric**.</li>
+                        <li>Improving healthcare workflow efficiency by classifying policy details and enabling predictive analytics.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- --- Contact Section --- -->
+        <section id="contact" class="py-16">
+            <h2 class="section-title text-center">Get In Touch</h2>
+            <div class="max-w-2xl mx-auto bg-slate-800 p-8 rounded-2xl shadow-2xl border-t-4 border-indigo-500">
+                <p class="text-center text-gray-300 text-lg mb-8">
+                    I'm seeking new challenges in Data Engineering and AI automation. Let's connect!
+                </p>
+
+                <div class="flex justify-center space-x-8 mb-8">
+                    <a href="mailto:kashinathjada@gmail.com" class="group flex flex-col items-center p-3 rounded-xl hover:bg-slate-700/50 transition">
+                        <i data-lucide="mail" class="w-8 h-8 text-cyan-400 group-hover:text-cyan-300 mb-1"></i>
+                        <span class="text-sm text-gray-300">Email Me</span>
+                    </a>
+                    <a href="https://linkedin.com/in/kashinathj" target="_blank" class="group flex flex-col items-center p-3 rounded-xl hover:bg-slate-700/50 transition">
+                        <i data-lucide="linkedin" class="w-8 h-8 text-indigo-400 group-hover:text-indigo-300 mb-1"></i>
+                        <span class="text-sm text-gray-300">LinkedIn</span>
+                    </a>
+                </div>
+                
+                <form id="contactForm" class="space-y-4">
+                    <input type="text" id="name" placeholder="Your Name" required class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-cyan-500 focus:ring-cyan-500">
+                    <input type="email" id="email" placeholder="Your Email" required class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-cyan-500 focus:ring-cyan-500">
+                    <textarea id="message" rows="4" placeholder="Your Message" required class="w-full p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:border-cyan-500 focus:ring-cyan-500 resize-none"></textarea>
+                    
+                    <button type="submit" class="w-full py-3 bg-cyan-600 text-white font-bold rounded-lg hover:bg-cyan-700 transition duration-300 transform hover:scale-[1.01] shadow-lg shadow-cyan-500/30">
+                        Send Message
+                    </button>
+                    <div id="formMessage" class="mt-3 text-center text-sm"></div>
+                </form>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 mt-10 border-t border-slate-700/50 text-center text-gray-400 text-sm">
+        <p>&copy; 2025 Kashinath Jada. All rights reserved. | Built with Stylish UI/UX</p>
+    </footer>
+
+    <!-- JavaScript for Dynamic UX/Aesthetics -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initialize Lucide Icons
+            lucide.createIcons();
+            
+            // 2. Mobile Menu Toggle (JavaScript for interactive UX)
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when a link is clicked
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 3. Smooth Scrolling and Active Link Highlighting (UX)
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main > section, header#home');
+            const navBarHeight = document.querySelector('nav').offsetHeight;
+
+            const setActiveLink = () => {
+                let currentSectionId = 'home';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - navBarHeight - 50; 
+                    if (window.scrollY >= sectionTop) {
+                        currentSectionId = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-cyan-400', 'font-bold');
+                    link.classList.add('text-gray-300', 'font-medium');
+                    if (link.getAttribute('href').substring(1) === currentSectionId) {
+                        link.classList.remove('text-gray-300', 'font-medium');
+                        link.classList.add('text-cyan-400', 'font-bold');
+                    }
+                });
+            }
+            window.addEventListener('scroll', setActiveLink);
+            setActiveLink(); // Set initial active link on load
+            
+            // 4. Simple Form Submission Handling (UX improvement - no alert/confirm)
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('formMessage');
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const submitButton = contactForm.querySelector('button[type="submit"]');
+
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+                formMessage.className = 'mt-3 text-center text-sm text-cyan-400';
+                formMessage.textContent = 'Message sending...';
+                
+                setTimeout(() => {
+                    // Simulate form submission success
+                    formMessage.textContent = `Success! Thank you, ${name}. I'll get back to you shortly.`;
+                    formMessage.className = 'mt-3 text-center text-sm text-green-400 font-semibold';
+                    
+                    submitButton.textContent = 'Send Message';
+                    submitButton.disabled = false;
+                    contactForm.reset();
+                }, 1500);
+            });
+            
+            // 5. JavaScript-driven Star Field Aesthetic (Attractiveness)
+            const starField = document.getElementById('star-field');
+            const numStars = 80;
+
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = star.style.height = `${Math.random() * 2 + 1}px`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                star.style.opacity = Math.random() < 0.5 ? 0 : 1; // Start some visible
+                
+                // Subtle Twinkle/Zoom effect using JS/CSS timing
+                star.style.transition = `opacity ${Math.random() * 2 + 1}s, transform ${Math.random() * 3 + 1}s`;
+                star.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+
+                starField.appendChild(star);
+            }
+
+            // Periodically refresh star opacities for a twinkle effect
+            setInterval(() => {
+                document.querySelectorAll('.star').forEach(star => {
+                    // Randomly change opacity to simulate twinkling
+                    star.style.opacity = Math.random() < 0.3 ? 0.2 : 0.9;
+                });
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
